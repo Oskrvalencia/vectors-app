@@ -7,7 +7,6 @@ export async function POST(request) {
   try {
     await db();
     const data = await request.json();
-    console.log('data', data)
 
     const userFound = await Users.findOne({ email: data.email });
 

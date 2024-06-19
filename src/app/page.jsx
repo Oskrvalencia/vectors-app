@@ -3,6 +3,8 @@ import { useForm } from "react-hook-form";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import Link from "next/link";
+import "./globals.css";
 
 function LoginPage() {
   const {
@@ -82,6 +84,11 @@ function LoginPage() {
         <button className="w-full bg-blue-500 text-white p-3 rounded-lg mt-2">
           Login
         </button>
+        <div className="pt-3 flex justify-end">
+          <label htmlFor="" className="text-slate-400 text-lg">
+            <Link href="/register">Not registered?</Link>
+          </label>
+        </div>
       </form>
     </div>
   );

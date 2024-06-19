@@ -1,6 +1,7 @@
 "use client";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 function RegisterPage() {
   const {
@@ -33,8 +34,6 @@ function RegisterPage() {
       return alert(res.message);
     }
   });
-
-  console.log(errors);
 
   return (
     <div className="h-[calc(100vh-7rem)] flex justify-center items-center">
@@ -126,6 +125,11 @@ function RegisterPage() {
         <button className="w-full bg-blue-500 text-white p-3 rounded-lg mt-2">
           Register
         </button>
+        <div className="pt-3 flex justify-end">
+          <label htmlFor="" className="text-slate-400 text-lg">
+            <Link href="/">I'm already registered</Link>
+          </label>
+        </div>
       </form>
     </div>
   );

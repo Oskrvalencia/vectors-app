@@ -1,23 +1,17 @@
 "use client";
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
 
-async function DashboardPage() {
-  /* const session = await getServerSession(authOptions);
+import dynamic from "next/dynamic";
 
-  const router = useRouter(); */
+const LazyMap = dynamic(() => import("@/components/Map"), {
+  ssr: false,
+  loading: () => <p>Loading...</p>,
+});
 
- /*  useEffect(() => {
-    if (!session?.user) {
-      router.push("/");
-    }
-  }, [session, router]); */
+function DashboardPage() {
   return (
     <section className="h-[calc(100vh-7rem)] flex justify-center items-center">
       <div>
-        <h1 className="text-white text-5xl">App</h1>
+        <LazyMap />
       </div>
     </section>
   );

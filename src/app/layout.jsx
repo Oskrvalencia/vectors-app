@@ -5,7 +5,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
   title: "Vectors Map",
-  description: "Plataforma para graficar vectores en mapas",
+  description: "Platform to graph vectors on maps",
 };
 
 export default function RootLayout({ children }) {
