@@ -1,6 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import '~leaflet-contextmenu/dist/leaflet.contextmenu.min.css';
+
 
 body {
   @apply bg-gray-950 text-white;
@@ -14,4 +16,44 @@ nav {
 
 li {
   cursor: pointer;
+}
+
+.sidebar {
+  width: 20%;
+  height: calc(100vh - 50px);
+  position: fixed;
+  left: 0;
+  top: 50px;
+  background-color: #101010;
+  color: #fff;
+  padding: 20px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar ul li {
+  margin: 20px 0;
+}
+
+.sidebar ul li a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.sidebar ul li a:hover {
+  text-decoration: underline;
+}
+
+.sidebar-option {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.sidebar-option.selected {
+  background-color: blue;
+  color: white;
 }
