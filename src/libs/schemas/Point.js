@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+const Schema = mongoose.Schema;
 
 const PointSchema = new mongoose.Schema({
   latLng: {
@@ -12,7 +13,7 @@ const PointSchema = new mongoose.Schema({
     unique: true,
   },
   user: {
-    type: Object,
+    type: Schema.Types.ObjectId,
     required: [true, "Por favor, añade una usuario"],
     unique: true,
   },

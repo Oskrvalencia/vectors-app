@@ -21,6 +21,7 @@ export async function POST(request) {
     const p = new Point({
       latLng: [data.lat, data.lng],
       description: data.description,
+      user: data.user
     });
 
     await p.save();

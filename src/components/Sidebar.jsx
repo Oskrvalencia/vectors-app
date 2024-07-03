@@ -9,7 +9,7 @@ import Point from "./Point";
 
 export default function Sidebar() {
   const [description, setDescription] = useState(null);
-  const { coordinates, option, setOption } = useContext(MapContext);
+  const { coordinates, option, setOption, session } = useContext(MapContext);
 
   useEffect(() => {
     if (coordinates) {
@@ -51,7 +51,11 @@ export default function Sidebar() {
         ))}
       </ul>
       {option && option === "Point" && coordinates && (
-        <Point coordinates={coordinates} description={description} />
+        <Point
+          coordinates={coordinates}
+          description={description}
+          session={session}
+        />
       )}
     </div>
   );

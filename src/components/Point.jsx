@@ -1,8 +1,32 @@
 "use client";
 
 import React from "react";
+import { toast } from "react-toastify";
 
-const Point = ({ coordinates, description }) => {
+const Point = ({ coordinates, description, session }) => {
+  const notify = () => {
+    toast.success("En punto se ha creado!", {
+      position: "bottom-left",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+  };
+  const notifyError = (error) => {
+    toast.error(error, {
+      position: "bottom-left",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     fetch(`/api/point`, {
@@ -11,17 +35,22 @@ const Point = ({ coordinates, description }) => {
         lat: coordinates[0],
         lng: coordinates[1],
         description: description,
+        user: session.user.id,
       }),
       headers: {
         "Content-Type": "application/json",
       },
     })
       .then((response) => response.json())
-      .then(() => {
-        alert("Save point");
+      .then((e) => {
+        if (e.includes("E11000 duplicate key error collection")) {
+          notifyError("El punto ya fue creado anteriormente");
+        } else {
+          notify();
+        }
       })
       .catch((error) => {
-        alert(error.message);
+        notifyError(error.message);
       });
   };
 
