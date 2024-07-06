@@ -7,21 +7,28 @@ import "leaflet-contextmenu";
 
 import {
   MapContainer,
-  Marker,
-  Polygon,
-  Popup,
-  TileLayer,
   useMapEvents,
+  TileLayer,
+  Polygon,
+  Marker,
+  Circle,
 } from "react-leaflet";
-import { useContext, useEffect, useState } from "react";
+import { Suspense, useContext } from "react";
 import { latLng } from "leaflet";
 
 import MapContext from "@/context/MapContext";
 
 export default function Map() {
-  const { coordinates, setCoordinates, option, polygon, setPolygon } =
-    useContext(MapContext);
-  const [points, setPoints] = useState([]);
+  const {
+    coordinates,
+    setCoordinates,
+    option,
+    polygon,
+    setPolygon,
+    setCircle,
+    circlepoint,
+  } = useContext(MapContext);
+  /* const [points, setPoints] = useState([]); */
 
   /* useEffect(() => {
     fetch(`/api/point`, { method: "GET" })
@@ -38,59 +45,87 @@ export default function Map() {
           setCoordinates([e.latlng.lat, e.latlng.lng]);
         },
       });
-
       return null;
     } else if (option === "Polygon") {
-      setCoordinates(null);
       useMapEvents({
         click(e) {
+          setCoordinates(null);
           setPolygon([...polygon, latLng(e.latlng.lat, e.latlng.lng)]);
         },
       });
-
+      return null;
+    } else if (option === "Circle") {
+      useMapEvents({
+        click(e) {
+          console.log("one", [e.latlng.lat, e.latlng.lng]);
+          setCircle([e.latlng.lat, e.latlng.lng]);
+          console.log("first", circlepoint);
+        },
+      });
       return null;
     }
   };
 
+  const pathOptions = {
+    color: "purple",
+    fillColor: "red",
+  };
+
   return (
-    <MapContainer
-      center={[4.671107231738902, -74.08559362300092]}
-      zoom={11}
-      scrollWheelZoom={true}
-      style={{
-        height: "calc(100vh - 50px)",
-        width: "80%",
-        position: "absolute",
-        top: "50px",
-        left: "20%",
-      }}
-    >
-      <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-      />
-      <MapClickHandler />
-      {coordinates && (
-        <Marker
-          key={coordinates[0]}
-          position={latLng(coordinates[0], coordinates[1])}
-        ></Marker>
-      )}
-      {points.length > 0
-        ? points.map((e) => {
-            return (
-              <Marker key={e._id} position={latLng(e.latLng[0], e.latLng[1])}>
-                <Popup>{e.description}</Popup>
-              </Marker>
-            );
-          })
-        : null}
-      <Polygon
-        positions={polygon}
-        color="purple"
-        contextmenu={true}
-        contextmenuItems={[{ text: "Zoom in" }, { text: "Zoom out" }]}
-      />
-    </MapContainer>
+    <Suspense>
+      <MapContainer
+        center={[4.671107231738902, -74.08559362300092]}
+        zoom={11}
+        scrollWheelZoom={true}
+        style={{
+          height: "calc(100vh - 50px)",
+          width: "80%",
+          position: "absolute",
+          top: "50px",
+          left: "20%",
+        }}
+      >
+        <TileLayer
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
+        <MapClickHandler />
+        {coordinates && (
+          <Marker
+            key={coordinates[0]}
+            position={latLng(coordinates[0], coordinates[1])}
+          ></Marker>
+        )}
+        {circlepoint && (
+          <Circle center={circlepoint} pathOptions={pathOptions} radius={500} />
+        )}
+        {/* {points.length > 0
+          ? points.map((e) => {
+              return (
+                <Marker key={e._id} position={latLng(e.latLng[0], e.latLng[1])}>
+                  <Popup>{e.description}</Popup>
+                </Marker>
+              );
+            })
+          : null} */}
+
+        {polygon.length > 2 && (
+          <Polygon
+            positions={polygon}
+            color="purple"
+            contextmenu={true}
+            contextmenuInheritItems={false}
+            contextmenuItems={[
+              {
+                text: "Eliminar",
+                callback: () => {
+                  setPolygon([]);
+                },
+              },
+            ]}
+          />
+        )}
+      </MapContainer>
+    </Suspense>
   );
 }

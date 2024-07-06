@@ -8,6 +8,7 @@ const MapContext = createContext();
 export const MapProvider = ({ children }) => {
   const { data: session } = useSession();
   const [coordinates, setCoordinates] = useState(null);
+  const [circlepoint, setCircle] = useState(null);
   const [polygon, setPolygon] = useState([]);
   const [option, setOption] = useState(null);
 
@@ -21,6 +22,8 @@ export const MapProvider = ({ children }) => {
         polygon,
         setPolygon,
         session,
+        setCircle,
+        circlepoint
       }}
     >
       {children}

@@ -6,10 +6,12 @@ import MapContext from "@/context/MapContext";
 
 import "./../app/globals.css";
 import Point from "./Point";
+import Polygon from "./Polygon";
 
 export default function Sidebar() {
   const [description, setDescription] = useState(null);
-  const { coordinates, option, setOption, session } = useContext(MapContext);
+  const { coordinates, option, setOption, session, polygon, circlepoint } =
+    useContext(MapContext);
 
   useEffect(() => {
     if (coordinates) {
@@ -26,9 +28,6 @@ export default function Sidebar() {
         .then((response) => response.json())
         .then((data) => {
           setDescription(data);
-        })
-        .catch((error) => {
-          // Maneja el error
         });
     }
   }, [coordinates]);
@@ -57,6 +56,10 @@ export default function Sidebar() {
           session={session}
         />
       )}
+      {option && option === "Polygon" && polygon.length > 2 && (
+        <Polygon coordinates={polygon} session={session} />
+      )}
+      {option && option === "Circle" && circlepoint && <h1>{circlepoint}</h1>}
     </div>
   );
 }
