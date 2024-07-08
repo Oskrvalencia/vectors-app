@@ -7,19 +7,27 @@ import MapContext from "@/context/MapContext";
 import "./../app/globals.css";
 import Point from "./Point";
 import Polygon from "./Polygon";
+import Circle from "./Circle";
 
 export default function Sidebar() {
   const [description, setDescription] = useState(null);
-  const { coordinates, option, setOption, session, polygon, circlepoint } =
-    useContext(MapContext);
+  const {
+    coordinates,
+    option,
+    setOption,
+    session,
+    polygon,
+    circlepoint,
+    setCircle,
+  } = useContext(MapContext);
 
   useEffect(() => {
-    if (coordinates) {
+    if (coordinates || circlepoint) {
       fetch(`/api/nominatim`, {
         method: "POST",
         body: JSON.stringify({
-          lat: coordinates[0],
-          lng: coordinates[1],
+          lat: coordinates ? coordinates[0] : circlepoint[0],
+          lng: coordinates ? coordinates[1] : circlepoint[1],
         }),
         headers: {
           "Content-Type": "application/json",
@@ -30,9 +38,9 @@ export default function Sidebar() {
           setDescription(data);
         });
     }
-  }, [coordinates]);
+  }, [coordinates ? coordinates : circlepoint]);
 
-  const options = ["Point", "Polygon", "Route", "Circle"];
+  const options = ["Point", "Polygon", "Circle"];
 
   return (
     <div className="sidebar snap-y overflow-auto h-auto ">
@@ -59,7 +67,14 @@ export default function Sidebar() {
       {option && option === "Polygon" && polygon.length > 2 && (
         <Polygon coordinates={polygon} session={session} />
       )}
-      {option && option === "Circle" && circlepoint && <h1>{circlepoint}</h1>}
+      {option && option === "Circle" && circlepoint && (
+        <Circle
+          session={session}
+          circlepoint={circlepoint}
+          description={description}
+          setCircle={setCircle}
+        />
+      )}
     </div>
   );
 }

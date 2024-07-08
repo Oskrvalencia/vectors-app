@@ -15,7 +15,7 @@ const PointSchema = new mongoose.Schema({
   user: {
     type: Schema.Types.ObjectId,
     required: [true, "Por favor, añade una usuario"],
-    unique: true,
+    unique: false,
   },
 });
 

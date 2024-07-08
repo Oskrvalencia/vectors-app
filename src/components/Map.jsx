@@ -28,20 +28,13 @@ export default function Map() {
     setCircle,
     circlepoint,
   } = useContext(MapContext);
-  /* const [points, setPoints] = useState([]); */
-
-  /* useEffect(() => {
-    fetch(`/api/point`, { method: "GET" })
-      .then((response) => response.json())
-      .then((data) => {
-        setPoints(data);
-      });
-  }, []); */
 
   const MapClickHandler = () => {
     if (option === "Point") {
       useMapEvents({
         click(e) {
+          setPolygon([]);
+          setCircle(null);
           setCoordinates([e.latlng.lat, e.latlng.lng]);
         },
       });
@@ -50,6 +43,7 @@ export default function Map() {
       useMapEvents({
         click(e) {
           setCoordinates(null);
+          setCircle(null);
           setPolygon([...polygon, latLng(e.latlng.lat, e.latlng.lng)]);
         },
       });
@@ -57,9 +51,9 @@ export default function Map() {
     } else if (option === "Circle") {
       useMapEvents({
         click(e) {
-          console.log("one", [e.latlng.lat, e.latlng.lng]);
+          setCoordinates(null);
+          setPolygon([]);
           setCircle([e.latlng.lat, e.latlng.lng]);
-          console.log("first", circlepoint);
         },
       });
       return null;
@@ -99,15 +93,6 @@ export default function Map() {
         {circlepoint && (
           <Circle center={circlepoint} pathOptions={pathOptions} radius={500} />
         )}
-        {/* {points.length > 0
-          ? points.map((e) => {
-              return (
-                <Marker key={e._id} position={latLng(e.latLng[0], e.latLng[1])}>
-                  <Popup>{e.description}</Popup>
-                </Marker>
-              );
-            })
-          : null} */}
 
         {polygon.length > 2 && (
           <Polygon

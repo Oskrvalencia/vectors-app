@@ -3,7 +3,7 @@
 import React from "react";
 import { toast } from "react-toastify";
 
-const Point = ({ coordinates, description, session, setCoordinates }) => {
+const Circle = ({ circlepoint, description, session, setCircle }) => {
   const optionToast = {
     position: "bottom-left",
     autoClose: 5000,
@@ -15,7 +15,7 @@ const Point = ({ coordinates, description, session, setCoordinates }) => {
   };
 
   const notify = () => {
-    toast.success("Create point!", optionToast);
+    toast.success("Create circle!", optionToast);
   };
 
   const notifyError = (error) => {
@@ -24,11 +24,11 @@ const Point = ({ coordinates, description, session, setCoordinates }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    fetch(`/api/point`, {
+    fetch(`/api/circle`, {
       method: "POST",
       body: JSON.stringify({
-        lat: coordinates[0],
-        lng: coordinates[1],
+        lat: circlepoint[0],
+        lng: circlepoint[1],
         description: description,
         user: session.user.id,
       }),
@@ -38,15 +38,12 @@ const Point = ({ coordinates, description, session, setCoordinates }) => {
     })
       .then((response) => response.json())
       .then((e) => {
-        if (e.includes("E11000 duplicate key error collection")) {
-          notifyError("The point was already created previously");
+        if (typeof e !== "boolean") {
+          notifyError(e);
         } else {
           notify();
-          setCoordinates(null);
+          setCircle(null);
         }
-      })
-      .catch((error) => {
-        notifyError(error.message);
       });
   };
 
@@ -64,7 +61,7 @@ const Point = ({ coordinates, description, session, setCoordinates }) => {
           className="bg-gray-700 text-white p-3 rounded-lg mt-2 mb-2 w-full text-xs"
           type="text"
           readOnly
-          value={coordinates[0]}
+          value={circlepoint[0]}
         />
         <label className="text-slate-400 text-xs" htmlFor="">
           Longitude:
@@ -73,7 +70,7 @@ const Point = ({ coordinates, description, session, setCoordinates }) => {
           className="bg-gray-700 text-white p-3 rounded-lg mt-2 mb-2 w-full text-xs"
           type="text"
           readOnly
-          value={coordinates[1]}
+          value={circlepoint[1]}
         />
         <label className="text-slate-400 text-xs" htmlFor="">
           Description:
@@ -96,4 +93,4 @@ const Point = ({ coordinates, description, session, setCoordinates }) => {
   );
 };
 
-export default Point;
+export default Circle;

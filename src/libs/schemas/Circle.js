@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
-const PointSchema = new mongoose.Schema({
+const CircleSchema = new mongoose.Schema({
   latLng: {
     type: [],
     required: [true, "Por favor, añade una coordenada"],
@@ -19,4 +19,4 @@ const PointSchema = new mongoose.Schema({
   },
 });
 
-export default mongoose.models.Point || mongoose.model("Point", PointSchema);
+export default mongoose.models.Circle || mongoose.model("Circle", CircleSchema);

@@ -1,31 +1,26 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useContext } from "react";
 
-const Users = () => {
-  /* const [data, setUsers] = useState(null);
+import MapContext from "@/context/MapContext";
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      const response = await fetch("http://localhost:3000/api/users");
-      console.log("first", response);
-      const result = await response.json();
-      console.log("first", result);
-      setUsers(result);
-    };
-
-    fetchUsers();
-  }, []); */
+export default function Users() {
+  const { option, setOption, session } = useContext(MapContext);
 
   return (
-    <div>
-      Users
-      {/* {data?.map((e) => {
-        <h1>{e.name}</h1>;
-      })} */}
-      {/* {JSON.stringify(data)} */}
+    <div class="bg-slate-900 rounded-lg px-6 py-8 ring-1 ring-slate-900/5 shadow-xl m-10 ">
+      <div class="bg-slate-800 rounded-lg px-6 py-4 ring-1 ring-slate-900/5 shadow-xl flex">
+        <h3 class=" text-white mr-8 text-base font-medium tracking-tight col-4">
+          User:
+        </h3>
+        <p class="text-slate-400 text-sm col-8">{session.user.name}</p>
+      </div>
+      <div class="bg-slate-800 rounded-lg px-6 py-4 ring-1 ring-slate-900/5 shadow-xl flex mt-5">
+        <h3 class=" text-white mr-8 text-base font-medium tracking-tight col-4">
+          Email:
+        </h3>
+        <p class="text-slate-400 text-sm col-8">{session.user.email}</p>
+      </div>
     </div>
   );
-};
-
-export default Users;
+}

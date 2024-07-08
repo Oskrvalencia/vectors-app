@@ -2,6 +2,7 @@ import { Inter } from "next/font/google";
 import dynamic from "next/dynamic";
 import "./../globals.css";
 import React from "react";
+import { MapProvider } from "@/context/MapContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,7 +20,7 @@ export default function RootLayout({ children }) {
     <React.Fragment>
       <div className={inter.className}>
         <Navbar />
-        {children}
+        <MapProvider>{children}</MapProvider>
       </div>
     </React.Fragment>
   );
