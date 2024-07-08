@@ -127,7 +127,7 @@ function RegisterPage() {
         </button>
         <div className="pt-3 flex justify-end">
           <label htmlFor="" className="text-slate-400 text-lg">
-            <Link href="/">I'm already registered</Link>
+            <Link href="/">I am already registered</Link>
           </label>
         </div>
       </form>

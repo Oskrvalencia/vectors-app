@@ -30,34 +30,25 @@ export default function Map() {
   } = useContext(MapContext);
 
   const MapClickHandler = () => {
-    if (option === "Point") {
-      useMapEvents({
-        click(e) {
+    useMapEvents({
+      click(e) {
+        if (option === "Point") {
           setPolygon([]);
           setCircle(null);
           setCoordinates([e.latlng.lat, e.latlng.lng]);
-        },
-      });
-      return null;
-    } else if (option === "Polygon") {
-      useMapEvents({
-        click(e) {
+        } else if (option === "Polygon") {
           setCoordinates(null);
           setCircle(null);
           setPolygon([...polygon, latLng(e.latlng.lat, e.latlng.lng)]);
-        },
-      });
-      return null;
-    } else if (option === "Circle") {
-      useMapEvents({
-        click(e) {
+        } else if (option === "Circle") {
           setCoordinates(null);
           setPolygon([]);
           setCircle([e.latlng.lat, e.latlng.lng]);
-        },
-      });
-      return null;
-    }
+        }
+      },
+    });
+
+    return null;
   };
 
   const pathOptions = {
