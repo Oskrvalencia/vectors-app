@@ -93,14 +93,20 @@ const List = () => {
                   center={[e.latLng[0], e.latLng[1]]}
                   pathOptions={{ color: "purple", fillColor: "red" }}
                   radius={500}
-                />
+                >
+                  <Popup>{e.description}</Popup>
+                </Circle>
               );
             })
           : null}
 
         {polygons.length > 0
           ? polygons.map((e) => {
-              return <Polygon positions={e.coordinates} color="blue" />;
+              return (
+                <Polygon positions={e.coordinates} color="blue">
+                  <Popup>{e.name}</Popup>
+                </Polygon>
+              );
             })
           : null}
       </MapContainer>
