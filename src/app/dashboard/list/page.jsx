@@ -2,24 +2,25 @@
 
 import React, { useEffect, useState } from "react";
 import { Oval } from "react-loader-spinner";
+import { toast } from "react-toastify";
 
 const List = () => {
   const [points, setPoints] = useState([]);
   const [view, setView] = useState(false);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const alldata = [];
-      let po = await getPoints();
-      let pl = await getPolygons();
-      let c = await getCircles();
-      alldata.push(...po);
-      alldata.push(...pl);
-      alldata.push(...c);
-      setPoints(alldata);
-      setView(true);
-    };
+  const fetchData = async () => {
+    const alldata = [];
+    let po = await getPoints();
+    let pl = await getPolygons();
+    let c = await getCircles();
+    alldata.push(...po);
+    alldata.push(...pl);
+    alldata.push(...c);
+    setPoints(alldata);
+    setView(true);
+  };
 
+  useEffect(() => {
     fetchData();
   }, []);
 
@@ -57,6 +58,47 @@ const List = () => {
         });
       });
     return d;
+  };
+
+  const deleteItem = async (_id, type) => {
+    if (_id && type) {
+      fetch(`/api/${type.toLowerCase()}`, {
+        method: "DELETE",
+        body: JSON.stringify({
+          _id,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => response.json())
+        .then((e) => {
+          if (typeof e !== "boolean") {
+            notifyError(e);
+          } else {
+            notify();
+            fetchData();
+          }
+        });
+    }
+  };
+
+  const optionToast = {
+    position: "bottom-left",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+  };
+
+  const notify = () => {
+    toast.success("Delete item!", optionToast);
+  };
+
+  const notifyError = (error) => {
+    toast.error(error, optionToast);
   };
 
   return (
@@ -107,6 +149,7 @@ const List = () => {
                           viewBox="0 0 24 24"
                           fill="currentColor"
                           className="size-6 cursor-pointer"
+                          onClick={() => deleteItem(e._id, e.type)}
                         >
                           <path d="M3.375 3C2.339 3 1.5 3.84 1.5 4.875v.75c0 1.036.84 1.875 1.875 1.875h17.25c1.035 0 1.875-.84 1.875-1.875v-.75C22.5 3.839 21.66 3 20.625 3H3.375Z" />
                           <path

@@ -38,15 +38,12 @@ const Point = ({ coordinates, description, session, setCoordinates }) => {
     })
       .then((response) => response.json())
       .then((e) => {
-        if (e.includes("E11000 duplicate key error collection")) {
-          notifyError("The point was already created previously");
+        if (typeof e !== "boolean") {
+          notifyError(e);
         } else {
           notify();
           setCoordinates(null);
         }
-      })
-      .catch((error) => {
-        notifyError(error.message);
       });
   };
 

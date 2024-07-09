@@ -3,6 +3,7 @@ import dynamic from "next/dynamic";
 import "./../globals.css";
 import React from "react";
 import { MapProvider } from "@/context/MapContext";
+import { ToastContainer } from "react-toastify";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,6 +21,7 @@ export default function RootLayout({ children }) {
     <React.Fragment>
       <div className={inter.className}>
         <Navbar />
+        <ToastContainer />
         <MapProvider>{children}</MapProvider>
       </div>
     </React.Fragment>

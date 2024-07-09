@@ -30,3 +30,14 @@ export async function POST(request) {
     return NextResponse.json(error.message);
   }
 }
+
+export async function DELETE(request) {
+  try {
+    await db();
+    const data = await request.json();
+    let a = await Polygon.deleteOne({ _id: data._id });
+    return NextResponse.json(true);
+  } catch (error) {
+    return NextResponse.json(error.message);
+  }
+}

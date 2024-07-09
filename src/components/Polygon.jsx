@@ -44,16 +44,13 @@ const Polygon = ({ coordinates, session }) => {
     })
       .then((response) => response.json())
       .then((e) => {
-        if (e.includes("E11000 duplicate key error collection")) {
-          notifyError("The polygon was already created previously");
+        if (typeof e !== "boolean") {
+          notifyError(e);
         } else {
           notify();
           setPolygon([]);
           setFormValues({ name: "" });
         }
-      })
-      .catch((error) => {
-        notifyError(error.message);
       });
   };
 
